@@ -17,8 +17,11 @@ import {
   del,
   requestBody,
   response,
+  HttpErrors,
 } from '@loopback/rest';
+import { Llaves } from '../config/llaves';
 import { Persona } from '../models';
+import { Credenciales } from '../models/credenciales.model';
 import { PersonaRepository } from '../repositories';
 import { AutenticacionService } from '../services';
 const fetch = require('node-fetch');
@@ -32,35 +35,64 @@ export class PersonaController {
 
   ) { }
 
-  @post('/personas')
-  @response(200, {
-    description: 'Persona model instance',
-    content: { 'application/json': { schema: getModelSchemaRef(Persona) } },
-  })
-  async create(
+
+@post('/identificarPersona', {
+  responses: {
+    '200':{
+    description: "Identificación de Usuarios"
+      
+   } }}
+  )
+async identificarPersona(
+  @requestBody() credenciales: Credenciales  
+)
+{
+  let p = await this.servicioAutenticacion.IdentificarPersona(credenciales.usuario, credenciales.clave)
+  if (p){;
+    let token = this.servicioAutenticacion.GenerarTokenJWT(p);
+    return{
+      datos:{ 
+        nombre: p.nombres,
+        correo: p.correo,
+        id: p.id
+    },
+    tk: token
+  }
+  }else{
+    throw new HttpErrors[401]("Datos invalidos");
+  }
+}
+
+@post('/personas')
+@response(200, {
+  description: 'Persona model instance',
+  content: { 'application/json': { schema: getModelSchemaRef(Persona) } },
+})
+async create(
     @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Persona, {
-            title: 'NewPersona',
-            exclude: ['id'],
-          }),
-        },
-      },
-    })
-    persona: Omit<Persona, 'id'>,
-  ): Promise<Persona> {
+  content: {
+    'application/json': {
+      schema: getModelSchemaRef(Persona, {
+        title: 'NewPersona',
+        exclude: ['id'],
+      }),
+    },
+  },
+})
+persona: Omit<Persona, 'id'>,
+  ): Promise < Persona > {
 
-    let clave = this.servicioAutenticacion.GenerarClave();
-    let claveCifrada = this.servicioAutenticacion.cifrarClave(clave);
-    persona.clave = claveCifrada;
-    let p = await this.personaRepository.create(persona);
+  let clave = this.servicioAutenticacion.GenerarClave();
+  let claveCifrada = this.servicioAutenticacion.cifrarClave(clave);
+  persona.clave = claveCifrada;
+  let p = await this.personaRepository.create(persona);
 
-    // notificar al usuario
-    let destino = persona.correo;
-    let asunto = 'Registro en la plataforma';
-    let contenido = `Hola ${persona.nombres}, su nombre de usuario es: ${persona.correo} y su contraseña es: ${clave}`;
-    fetch(`http://127.0.0.1:5000/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+  // notificar al usuario
+  let destino = persona.correo;
+  let asunto = 'Registro en la plataforma';
+  let contenido = `Hola ${persona.nombres}, su nombre de usuario es: ${persona.correo} y su contraseña es: ${clave}`;
+  fetch(`${Llaves.urlServicioNotificaciones
+} / envio - correo ? correo_destino = ${ destino }& asunto=${ asunto }& contenido=${ contenido } `)
       .then((data: any) => {
         console.log(data);
       })
