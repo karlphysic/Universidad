@@ -1,6 +1,6 @@
 <html>
     <head>
-
+      <link rel="stylesheet" href="Recursos/Styles.css">
     </head>
     <body>
         <h4>Etiquetas HTML</h4>
@@ -8,7 +8,7 @@
         <fieldset>
             <legend>Input</legend>
             <input type="text" />
-            <input type="button" value="Aceptar" />
+            <input type="button" value="CambiarFondo" onclick="CambiarFondo()" />
             <input type="checkbox" />
             <input type="radio" name="grupo1" />
             <input type="radio" name="grupo1" />
@@ -16,11 +16,9 @@
 
         <fieldset>
             <legend>Generales</legend>
-            <div>
-                Soy un div
-            </div>
+            <div class="fodoAzul" id="miDivision">Soy un div></div>
             <br />
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRovTEjIuHCUQJNg7xQzaidcXw6Hnl3U55HpQ&usqp=CAU" />
+            <img id=misionTic csrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRovTEjIuHCUQJNg7xQzaidcXw6Hnl3U55HpQ&usqp=CAU" />
             <br />
             <a href="https://www.ucaldas.edu.co" >Visitar Pagina Web Ucaldas</a>
             <br />
@@ -29,7 +27,7 @@
 
         <fieldset>
             <legend>Tabla</legend>
-            <table>
+            <table class="fondoAzul">
                 <thead>
                     <tr>
                         <th>
@@ -67,9 +65,10 @@
                         </td>
                     </tr>
                 </tbody>
+                <div class="fondoAzul bordeBlanco" id="miDivision"> <strong> Css y HTML </strong> </div>
             </table>
         </fieldset>
-
+        <script src="Recursos/funciones.js" type="text/javascript"></script>
     </body>
 
 </html>
