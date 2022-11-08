@@ -19,7 +19,7 @@ import {
   response,
   HttpErrors,
 } from '@loopback/rest';
-import { Llaves } from '../config/Llaves';
+import { Llaves } from '../config/llaves';
 import { Persona } from '../models';
 import { Credenciales } from '../models/credenciales.model';
 import { PersonaRepository } from '../repositories';
