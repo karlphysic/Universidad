@@ -1,7 +1,7 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import { CountSchema, repository } from '@loopback/repository';
 import { verify } from 'crypto';
-import { Llaves } from '../config/llaves';
+import { Llaves } from '../config/Llaves';
 import { Persona } from '../models';
 import { PersonaRepository } from '../repositories';
 
@@ -57,8 +57,8 @@ GenerarTokenJWT(persona: Persona){
       persona.apellidos
      }
   },
-  Llaves.claveJWT
-  )
+  Llaves.claveJWT 
+   )
   return token;
  
 }

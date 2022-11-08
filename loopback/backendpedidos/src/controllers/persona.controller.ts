@@ -19,7 +19,7 @@ import {
   response,
   HttpErrors,
 } from '@loopback/rest';
-import { Llaves } from '../config/llaves';
+import { Llaves } from '../config/Llaves';
 import { Persona } from '../models';
 import { Credenciales } from '../models/credenciales.model';
 import { PersonaRepository } from '../repositories';
@@ -82,7 +82,7 @@ async create(
 persona: Omit<Persona, 'id'>,
   ): Promise < Persona > {
 
-  let clave = this.servicioAutenticacion.GenerarClave();
+  let  clave = this.servicioAutenticacion.GenerarClave();
   let claveCifrada = this.servicioAutenticacion.cifrarClave(clave);
   persona.clave = claveCifrada;
   let p = await this.personaRepository.create(persona);
